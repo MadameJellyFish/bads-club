@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,6 +38,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\ManyToOne]
+    private ?Address $address = null;
+
+    /**
+     * @var Collection<int, UserReservation>
+     */
+    #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'user')]
+    private Collection $userReservations;
+
+    /**
+     * @var Collection<int, UserSport>
+     */
+    #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'user_id')]
+    private Collection $sport_id;
+
+    public function __construct()
+    {
+        $this->userReservations = new ArrayCollection();
+        $this->sport_id = new ArrayCollection();
+    }
 
     public function getId(): ?Uuid
     {
@@ -110,5 +133,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserReservation>
+     */
+    public function getUserReservations(): Collection
+    {
+        return $this->userReservations;
+    }
+
+    public function addUserReservation(UserReservation $userReservation): static
+    {
+        if (!$this->userReservations->contains($userReservation)) {
+            $this->userReservations->add($userReservation);
+            $userReservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserReservation(UserReservation $userReservation): static
+    {
+        if ($this->userReservations->removeElement($userReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($userReservation->getUser() === $this) {
+                $userReservation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserSport>
+     */
+    public function getSportId(): Collection
+    {
+        return $this->sport_id;
+    }
+
+    public function addSportId(UserSport $sportId): static
+    {
+        if (!$this->sport_id->contains($sportId)) {
+            $this->sport_id->add($sportId);
+            $sportId->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSportId(UserSport $sportId): static
+    {
+        if ($this->sport_id->removeElement($sportId)) {
+            // set the owning side to null (unless already changed)
+            if ($sportId->getUser() === $this) {
+                $sportId->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

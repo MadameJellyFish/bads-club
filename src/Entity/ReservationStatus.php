@@ -2,32 +2,28 @@
 
 namespace App\Entity;
 
-use App\Repository\SportCourtRepository;
+use App\Repository\ReservationStatusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
-#[ORM\Entity(repositoryClass: SportCourtRepository::class)]
-class SportCourt
+#[ORM\Entity(repositoryClass: ReservationStatusRepository::class)]
+class ReservationStatus
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $court_name = null;
-
-    #[ORM\ManyToOne(inversedBy: 'sportCourts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Sport $sport = null;
+    #[ORM\Column(length: 20)]
+    private ?string $status_name = null;
 
     /**
      * @var Collection<int, UserReservation>
      */
-    #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'court')]
+    #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'status')]
     private Collection $userReservations;
 
     public function __construct()
@@ -40,26 +36,14 @@ class SportCourt
         return $this->id;
     }
 
-    public function getCourtName(): ?string
+    public function getStatusName(): ?string
     {
-        return $this->court_name;
+        return $this->status_name;
     }
 
-    public function setCourtName(string $court_name): static
+    public function setStatusName(string $status_name): static
     {
-        $this->court_name = $court_name;
-
-        return $this;
-    }
-
-    public function getSport(): ?Sport
-    {
-        return $this->sport;
-    }
-
-    public function setSport(?Sport $sport): static
-    {
-        $this->sport = $sport;
+        $this->status_name = $status_name;
 
         return $this;
     }
@@ -76,7 +60,7 @@ class SportCourt
     {
         if (!$this->userReservations->contains($userReservation)) {
             $this->userReservations->add($userReservation);
-            $userReservation->setCourt($this);
+            $userReservation->setStatus($this);
         }
 
         return $this;
@@ -86,8 +70,8 @@ class SportCourt
     {
         if ($this->userReservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
-            if ($userReservation->getCourt() === $this) {
-                $userReservation->setCourt(null);
+            if ($userReservation->getStatus() === $this) {
+                $userReservation->setStatus(null);
             }
         }
 

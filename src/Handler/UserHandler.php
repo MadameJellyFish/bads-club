@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use App\Entity\Address;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -37,5 +38,16 @@ class UserHandler extends Handler
             'email' => $user->getEmail(),
             'roles' => $user->getRoles()
         ], $users);
+    }
+
+    public function getUserAddress(): ?Address
+    {
+        $user = $this->getUser();
+        if ($user === null) {
+            return [];
+        }
+
+        $address = $user->getAddress();
+        return $address;
     }
 }
