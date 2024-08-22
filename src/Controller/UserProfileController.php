@@ -19,8 +19,5 @@ class UserProfileController extends AbstractController
         }
 
         return new JsonResponse($userHandler->getUserProfileInfos());
-        // return $this->render('user_profile/index.html.twig', [
-        //     'controller_name' => 'UserProfileController',
-        // ]);
     }
 }
