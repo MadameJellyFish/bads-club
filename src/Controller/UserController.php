@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
+    // test with roles
     #[Route('/api/user', name: 'app_user', format: 'json')]
     public function index(UserHandler $userHandler): JsonResponse
     {
