@@ -9,38 +9,38 @@ jobs:
     name: Symfony (PHP 8.2.4)
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        ports:
-          - 5432/tcp
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
-      
-      php:
-        build: ./docker/php
-        ports:
-          - 9000:9000
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/${{ secrets.POSTGRES_DB }}
+  services:
+    db:
+      image: postgres:latest
+      env:
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      ports:
+        - 5432/tcp
+      options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
+    
+    # php:
+    #   build: ./docker/php
+    #   ports:
+    #     - 9000:9000
+    #   env:
+    #     DATABASE_URL: postgres://postgres:postgres@localhost:5432/${{ secrets.POSTGRES_DB }}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: composer install --no-progress --prefer-dist
-      
-      - name: Run unit tests
-        run: |
-          if [ -f vendor/bin/phpunit ]; then
-            vendor/bin/phpunit --coverage-text
-          else
-            echo "No tests implemented yet."
-          fi
+    - name: Install dependencies
+      run: composer install --no-progress --prefer-dist
+    
+    - name: Run unit tests
+      run: |
+        if [ -f vendor/bin/phpunit ]; then
+          vendor/bin/phpunit --coverage-text
+        else
+          echo "No tests implemented yet."
+        fi
 
   deploy:
     runs-on: ubuntu-latest
