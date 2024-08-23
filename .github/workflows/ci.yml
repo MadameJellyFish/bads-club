@@ -28,7 +28,7 @@ jobs:
     #     DATABASE_URL: postgres://postgres:postgres@localhost:5432/${{ secrets.POSTGRES_DB }}
 
   steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Install dependencies
