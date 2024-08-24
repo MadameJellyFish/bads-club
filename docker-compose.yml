@@ -5,7 +5,7 @@ services:
     ports:
       - "9000:9000" # Redirige le port 9000 du conteneur vers le port 9000 de l'hôte
     volumes:
-      - .:/var/www # Monte le répertoire local dans /var/www/html du conteneur
+      - .:/var/www # Monte le répertoire local dans /var/www du conteneur
     restart: always
     depends_on:
       - db  # Indique que le conteneur `php` dépend du conteneur `db`

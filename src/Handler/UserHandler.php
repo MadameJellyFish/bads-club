@@ -24,7 +24,14 @@ class UserHandler extends Handler
         return [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
-            'roles' => $user->getRoles()
+            'roles' => $user->getRoles(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'birthdate' => $user->getBirthdate(),
+            'address' => $user->getAddress()->getAddress(),
+            'zipcode'  => $user->getAddress()->getZipcode(),
+            'city' => $user->getAddress()->getCity(),
+            'country' => $user->getAddress()->getCountry(),
         ];
     }
 

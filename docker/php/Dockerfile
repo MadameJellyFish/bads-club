@@ -17,11 +17,11 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copia los archivos de la aplicación
-COPY . /var/www/html
+COPY . /var/www
 
 # Establece permisos adecuados
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
 # Establece el directorio de trabajo
-WORKDIR /var/www/html
+WORKDIR /var/www

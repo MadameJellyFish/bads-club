@@ -24,11 +24,11 @@ class ReservationStatus
      * @var Collection<int, UserReservation>
      */
     #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'status')]
-    private Collection $userReservations;
+    private Collection $user_reservations;
 
     public function __construct()
     {
-        $this->userReservations = new ArrayCollection();
+        $this->user_reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,13 +53,13 @@ class ReservationStatus
      */
     public function getUserReservations(): Collection
     {
-        return $this->userReservations;
+        return $this->user_reservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->userReservations->contains($userReservation)) {
-            $this->userReservations->add($userReservation);
+        if (!$this->user_reservations->contains($userReservation)) {
+            $this->user_reservations->add($userReservation);
             $userReservation->setStatus($this);
         }
 
@@ -68,7 +68,7 @@ class ReservationStatus
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->userReservations->removeElement($userReservation)) {
+        if ($this->user_reservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getStatus() === $this) {
                 $userReservation->setStatus(null);

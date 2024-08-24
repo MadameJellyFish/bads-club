@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -46,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, UserReservation>
      */
     #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'user')]
-    private Collection $userReservations;
+    private Collection $user_reservations;
 
     /**
      * @var Collection<int, UserSport>
@@ -54,9 +55,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'user_id')]
     private Collection $sport_id;
 
+    #[ORM\Column(length: 50)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $last_name = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $birthdate = null;
+
     public function __construct()
     {
-        $this->userReservations = new ArrayCollection();
+        $this->user_reservations = new ArrayCollection();
         $this->sport_id = new ArrayCollection();
     }
 
@@ -152,13 +162,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserReservations(): Collection
     {
-        return $this->userReservations;
+        return $this->user_reservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->userReservations->contains($userReservation)) {
-            $this->userReservations->add($userReservation);
+        if (!$this->user_reservations->contains($userReservation)) {
+            $this->user_reservations->add($userReservation);
             $userReservation->setUser($this);
         }
 
@@ -167,7 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->userReservations->removeElement($userReservation)) {
+        if ($this->user_reservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getUser() === $this) {
                 $userReservation->setUser(null);
@@ -203,6 +213,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $sportId->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): static
+    {
+        $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeInterface $birthdate): static
+    {
+        $this->birthdate = $birthdate;
 
         return $this;
     }

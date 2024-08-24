@@ -43,12 +43,12 @@ class Sport
         return $this->id;
     }
 
-    public function getSportName(): ?string
+    public function getsportName(): ?string
     {
         return $this->sport_name;
     }
 
-    public function setSportName(string $sport_name): static
+    public function setsportName(string $sport_name): static
     {
         $this->sport_name = $sport_name;
 

@@ -28,11 +28,11 @@ class SportCourt
      * @var Collection<int, UserReservation>
      */
     #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'court')]
-    private Collection $userReservations;
+    private Collection $user_reservations;
 
     public function __construct()
     {
-        $this->userReservations = new ArrayCollection();
+        $this->user_reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,13 +69,13 @@ class SportCourt
      */
     public function getUserReservations(): Collection
     {
-        return $this->userReservations;
+        return $this->user_reservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->userReservations->contains($userReservation)) {
-            $this->userReservations->add($userReservation);
+        if (!$this->user_reservations->contains($userReservation)) {
+            $this->user_reservations->add($userReservation);
             $userReservation->setCourt($this);
         }
 
@@ -84,7 +84,7 @@ class SportCourt
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->userReservations->removeElement($userReservation)) {
+        if ($this->user_reservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getCourt() === $this) {
                 $userReservation->setCourt(null);
