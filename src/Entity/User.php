@@ -15,7 +15,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`users`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -40,7 +40,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Address::class)]
+    #[ORM\JoinColumn(name: "address_id", referencedColumnName: "id", nullable: true)]
     private ?Address $address = null;
 
     /**
@@ -52,8 +53,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, UserSport>
      */
-    #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'user_id')]
-    private Collection $sport_id;
+    #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'user')]
+    private Collection $user_sports;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $firstName = null;
@@ -67,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->user_reservations = new ArrayCollection();
-        $this->sport_id = new ArrayCollection();
+        $this->user_sports = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -192,13 +193,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getSportId(): Collection
     {
-        return $this->sport_id;
+        return $this->user_sports;
     }
 
     public function addSportId(UserSport $sportId): static
     {
-        if (!$this->sport_id->contains($sportId)) {
-            $this->sport_id->add($sportId);
+        if (!$this->user_sports->contains($sportId)) {
+            $this->user_sports->add($sportId);
             $sportId->setUser($this);
         }
 
@@ -207,7 +208,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeSportId(UserSport $sportId): static
     {
-        if ($this->sport_id->removeElement($sportId)) {
+        if ($this->user_sports->removeElement($sportId)) {
             // set the owning side to null (unless already changed)
             if ($sportId->getUser() === $this) {
                 $sportId->setUser(null);

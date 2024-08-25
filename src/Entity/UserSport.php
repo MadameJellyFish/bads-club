@@ -7,16 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`users_sports`')]
 #[ORM\Entity(repositoryClass: UserSportRepository::class)]
 class UserSport
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'userSports')]
+    #[ORM\ManyToOne(inversedBy: 'user_sports')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'userSports')]
+    #[ORM\ManyToOne(inversedBy: 'user_sports')]
     private ?Sport $sport = null;
 
     #[ORM\Id]

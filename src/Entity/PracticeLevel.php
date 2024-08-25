@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`practice_levels`')]
 #[ORM\Entity(repositoryClass: PracticeLevelRepository::class)]
 class PracticeLevel
 {

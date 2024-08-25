@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`sports_courts`')]
 #[ORM\Entity(repositoryClass: SportCourtRepository::class)]
 class SportCourt
 {
@@ -20,7 +21,7 @@ class SportCourt
     #[ORM\Column(length: 50)]
     private ?string $court_name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sportCourts')]
+    #[ORM\ManyToOne(inversedBy: 'sport_courts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Sport $sport = null;
 

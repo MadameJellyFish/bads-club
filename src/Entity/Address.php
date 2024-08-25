@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`addresses`')]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {
@@ -33,11 +34,11 @@ class Address
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'address')]
-    private Collection $user_uuid;
+    private Collection $uuid;
 
     public function __construct()
     {
-        $this->user_uuid = new ArrayCollection();
+        $this->uuid = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,13 +99,13 @@ class Address
      */
     public function getUserUuid(): Collection
     {
-        return $this->user_uuid;
+        return $this->uuid;
     }
 
     public function addUserUuid(User $userUuid): static
     {
-        if (!$this->user_uuid->contains($userUuid)) {
-            $this->user_uuid->add($userUuid);
+        if (!$this->uuid->contains($userUuid)) {
+            $this->uuid->add($userUuid);
             $userUuid->setAddress($this);
         }
 
@@ -113,7 +114,7 @@ class Address
 
     public function removeUserUuid(User $userUuid): static
     {
-        if ($this->user_uuid->removeElement($userUuid)) {
+        if ($this->uuid->removeElement($userUuid)) {
             // set the owning side to null (unless already changed)
             if ($userUuid->getAddress() === $this) {
                 $userUuid->setAddress(null);

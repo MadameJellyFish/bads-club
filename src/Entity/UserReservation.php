@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`users_reservations`')]
 #[ORM\Entity(repositoryClass: UserReservationRepository::class)]
 class UserReservation
 {
@@ -18,15 +19,15 @@ class UserReservation
     #[ORM\Column]
     private ?\DateTime $reservation_date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userReservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
+    #[ORM\JoinColumn(name: 'court_id', referencedColumnName: 'id',nullable: false)]
     private ?SportCourt $court = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userReservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
+    #[ORM\JoinColumn(name: 'status_id', referencedColumnName: 'id', nullable: false)]
     private ?ReservationStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userReservations')]
+    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 

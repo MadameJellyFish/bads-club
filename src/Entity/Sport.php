@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
+#[ORM\Table(name: '`sports`')]
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport
 {
@@ -24,18 +25,18 @@ class Sport
      * @var Collection<int, SportCourt>
      */
     #[ORM\OneToMany(targetEntity: SportCourt::class, mappedBy: 'sport', orphanRemoval: true)]
-    private Collection $sportCourts;
+    private Collection $sport_courts;
 
     /**
      * @var Collection<int, UserSport>
      */
     #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'sport')]
-    private Collection $userSports;
+    private Collection $user_sports;
 
     public function __construct()
     {
-        $this->sportCourts = new ArrayCollection();
-        $this->userSports = new ArrayCollection();
+        $this->sport_courts = new ArrayCollection();
+        $this->user_sports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,13 +61,13 @@ class Sport
      */
     public function getSportCourts(): Collection
     {
-        return $this->sportCourts;
+        return $this->sport_courts;
     }
 
     public function addSportCourt(SportCourt $sportCourt): static
     {
-        if (!$this->sportCourts->contains($sportCourt)) {
-            $this->sportCourts->add($sportCourt);
+        if (!$this->sport_courts->contains($sportCourt)) {
+            $this->sport_courts->add($sportCourt);
             $sportCourt->setSport($this);
         }
 
@@ -75,7 +76,7 @@ class Sport
 
     public function removeSportCourt(SportCourt $sportCourt): static
     {
-        if ($this->sportCourts->removeElement($sportCourt)) {
+        if ($this->sport_courts->removeElement($sportCourt)) {
             // set the owning side to null (unless already changed)
             if ($sportCourt->getSport() === $this) {
                 $sportCourt->setSport(null);
@@ -90,13 +91,13 @@ class Sport
      */
     public function getUserSports(): Collection
     {
-        return $this->userSports;
+        return $this->user_sports;
     }
 
     public function addUserSport(UserSport $userSport): static
     {
-        if (!$this->userSports->contains($userSport)) {
-            $this->userSports->add($userSport);
+        if (!$this->user_sports->contains($userSport)) {
+            $this->user_sports->add($userSport);
             $userSport->setSport($this);
         }
 
@@ -105,7 +106,7 @@ class Sport
 
     public function removeUserSport(UserSport $userSport): static
     {
-        if ($this->userSports->removeElement($userSport)) {
+        if ($this->user_sports->removeElement($userSport)) {
             // set the owning side to null (unless already changed)
             if ($userSport->getSport() === $this) {
                 $userSport->setSport(null);
