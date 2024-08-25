@@ -48,27 +48,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, UserReservation>
      */
     #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'user')]
-    private Collection $user_reservations;
+    private Collection $userReservations;
 
     /**
      * @var Collection<int, UserSport>
      */
     #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'user')]
-    private Collection $user_sports;
+    private Collection $userSports;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(name: "first_name", length: 50, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $last_name = null;
+    #[ORM\Column(name: "last_name", length: 50, nullable: true)]
+    private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
     public function __construct()
     {
-        $this->user_reservations = new ArrayCollection();
-        $this->user_sports = new ArrayCollection();
+        $this->userReservations = new ArrayCollection();
+        $this->userSports = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -163,13 +163,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserReservations(): Collection
     {
-        return $this->user_reservations;
+        return $this->userReservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->user_reservations->contains($userReservation)) {
-            $this->user_reservations->add($userReservation);
+        if (!$this->userReservations->contains($userReservation)) {
+            $this->userReservations->add($userReservation);
             $userReservation->setUser($this);
         }
 
@@ -178,7 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->user_reservations->removeElement($userReservation)) {
+        if ($this->userReservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getUser() === $this) {
                 $userReservation->setUser(null);
@@ -191,24 +191,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, UserSport>
      */
-    public function getSportId(): Collection
+    public function getUserSports(): Collection
     {
-        return $this->user_sports;
+        return $this->userSports;
     }
 
-    public function addSportId(UserSport $sportId): static
+    public function addUserSport(UserSport $sportId): static
     {
-        if (!$this->user_sports->contains($sportId)) {
-            $this->user_sports->add($sportId);
+        if (!$this->userSports->contains($sportId)) {
+            $this->userSports->add($sportId);
             $sportId->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeSportId(UserSport $sportId): static
+    public function removeUserSport(UserSport $sportId): static
     {
-        if ($this->user_sports->removeElement($sportId)) {
+        if ($this->userSports->removeElement($sportId)) {
             // set the owning side to null (unless already changed)
             if ($sportId->getUser() === $this) {
                 $sportId->setUser(null);
@@ -232,12 +232,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }

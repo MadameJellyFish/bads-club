@@ -19,12 +19,12 @@ class PracticeLevel
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $level_name = null;
+    private ?string $levelName = null;
 
     /**
      * @var Collection<int, UserSport>
      */
-    #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'practice_level')]
+    #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'practiceLevel')]
     private Collection $userSports;
 
     public function __construct()
@@ -39,12 +39,12 @@ class PracticeLevel
 
     public function getLevelName(): ?string
     {
-        return $this->level_name;
+        return $this->levelName;
     }
 
-    public function setLevelName(string $level_name): static
+    public function setLevelName(string $levelName): static
     {
-        $this->level_name = $level_name;
+        $this->levelName = $levelName;
 
         return $this;
     }

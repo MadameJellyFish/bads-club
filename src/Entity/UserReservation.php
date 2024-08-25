@@ -17,17 +17,17 @@ class UserReservation
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTime $reservation_date = null;
+    private ?\DateTime $reservationDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
+    #[ORM\ManyToOne(inversedBy: 'userReservations')]
     #[ORM\JoinColumn(name: 'court_id', referencedColumnName: 'id',nullable: false)]
-    private ?SportCourt $court = null;
+    private ?SportCourt $sportCourt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
+    #[ORM\ManyToOne(inversedBy: 'userReservations')]
     #[ORM\JoinColumn(name: 'status_id', referencedColumnName: 'id', nullable: false)]
     private ?ReservationStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'user_reservations')]
+    #[ORM\ManyToOne(inversedBy: 'userReservations')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
@@ -38,24 +38,24 @@ class UserReservation
 
     public function getReservationDate(): ?\DateTime
     {
-        return $this->reservation_date;
+        return $this->reservationDate;
     }
 
-    public function setReservationDate(\DateTime $reservation_date): static
+    public function setReservationDate(\DateTime $reservationDate): static
     {
-        $this->reservation_date = $reservation_date;
+        $this->reservationDate = $reservationDate;
 
         return $this;
     }
 
     public function getCourt(): ?SportCourt
     {
-        return $this->court;
+        return $this->sportCourt;
     }
 
-    public function setCourt(?SportCourt $court): static
+    public function setCourt(?SportCourt $sportCourt): static
     {
-        $this->court = $court;
+        $this->sportCourt = $sportCourt;
 
         return $this;
     }

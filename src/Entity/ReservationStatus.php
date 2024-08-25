@@ -18,17 +18,17 @@ class ReservationStatus
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $status_name = null;
+    private ?string $statusName = null;
 
     /**
      * @var Collection<int, UserReservation>
      */
     #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'status')]
-    private Collection $user_reservations;
+    private Collection $userReservations;
 
     public function __construct()
     {
-        $this->user_reservations = new ArrayCollection();
+        $this->userReservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -38,12 +38,12 @@ class ReservationStatus
 
     public function getStatusName(): ?string
     {
-        return $this->status_name;
+        return $this->statusName;
     }
 
-    public function setStatusName(string $status_name): static
+    public function setStatusName(string $statusName): static
     {
-        $this->status_name = $status_name;
+        $this->statusName = $statusName;
 
         return $this;
     }
@@ -53,13 +53,13 @@ class ReservationStatus
      */
     public function getUserReservations(): Collection
     {
-        return $this->user_reservations;
+        return $this->userReservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->user_reservations->contains($userReservation)) {
-            $this->user_reservations->add($userReservation);
+        if (!$this->userReservations->contains($userReservation)) {
+            $this->userReservations->add($userReservation);
             $userReservation->setStatus($this);
         }
 
@@ -68,7 +68,7 @@ class ReservationStatus
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->user_reservations->removeElement($userReservation)) {
+        if ($this->userReservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getStatus() === $this) {
                 $userReservation->setStatus(null);

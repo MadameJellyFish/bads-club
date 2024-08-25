@@ -18,25 +18,25 @@ class Sport
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50, unique: true)]
-    private ?string $sport_name = null;
+    #[ORM\Column(name: "sport_name", length: 50, unique: true)]
+    private ?string $sportName = null;
 
     /**
      * @var Collection<int, SportCourt>
      */
     #[ORM\OneToMany(targetEntity: SportCourt::class, mappedBy: 'sport', orphanRemoval: true)]
-    private Collection $sport_courts;
+    private Collection $sportCourts;
 
     /**
      * @var Collection<int, UserSport>
      */
     #[ORM\OneToMany(targetEntity: UserSport::class, mappedBy: 'sport')]
-    private Collection $user_sports;
+    private Collection $userSports;
 
     public function __construct()
     {
-        $this->sport_courts = new ArrayCollection();
-        $this->user_sports = new ArrayCollection();
+        $this->sportCourts = new ArrayCollection();
+        $this->userSports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,12 +46,12 @@ class Sport
 
     public function getsportName(): ?string
     {
-        return $this->sport_name;
+        return $this->sportName;
     }
 
-    public function setsportName(string $sport_name): static
+    public function setsportName(string $sportName): static
     {
-        $this->sport_name = $sport_name;
+        $this->sportName = $sportName;
 
         return $this;
     }
@@ -61,13 +61,13 @@ class Sport
      */
     public function getSportCourts(): Collection
     {
-        return $this->sport_courts;
+        return $this->sportCourts;
     }
 
     public function addSportCourt(SportCourt $sportCourt): static
     {
-        if (!$this->sport_courts->contains($sportCourt)) {
-            $this->sport_courts->add($sportCourt);
+        if (!$this->sportCourts->contains($sportCourt)) {
+            $this->sportCourts->add($sportCourt);
             $sportCourt->setSport($this);
         }
 
@@ -76,7 +76,7 @@ class Sport
 
     public function removeSportCourt(SportCourt $sportCourt): static
     {
-        if ($this->sport_courts->removeElement($sportCourt)) {
+        if ($this->sportCourts->removeElement($sportCourt)) {
             // set the owning side to null (unless already changed)
             if ($sportCourt->getSport() === $this) {
                 $sportCourt->setSport(null);
@@ -91,13 +91,13 @@ class Sport
      */
     public function getUserSports(): Collection
     {
-        return $this->user_sports;
+        return $this->userSports;
     }
 
     public function addUserSport(UserSport $userSport): static
     {
-        if (!$this->user_sports->contains($userSport)) {
-            $this->user_sports->add($userSport);
+        if (!$this->userSports->contains($userSport)) {
+            $this->userSports->add($userSport);
             $userSport->setSport($this);
         }
 
@@ -106,7 +106,7 @@ class Sport
 
     public function removeUserSport(UserSport $userSport): static
     {
-        if ($this->user_sports->removeElement($userSport)) {
+        if ($this->userSports->removeElement($userSport)) {
             // set the owning side to null (unless already changed)
             if ($userSport->getSport() === $this) {
                 $userSport->setSport(null);

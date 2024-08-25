@@ -12,17 +12,17 @@ use ApiPlatform\Metadata\ApiResource;
 class UserSport
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'user_sports')]
+    #[ORM\ManyToOne(inversedBy: 'userSports')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'user_sports')]
+    #[ORM\ManyToOne(inversedBy: 'userSports')]
     private ?Sport $sport = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne]
-    private ?PracticeLevel $practice_level = null;
+    private ?PracticeLevel $practiceLevel = null;
 
     public function getUser(): ?User
     {
@@ -50,12 +50,12 @@ class UserSport
 
     public function getPracticeLevel(): ?PracticeLevel
     {
-        return $this->practice_level;
+        return $this->practiceLevel;
     }
 
-    public function setPracticeLevel(?PracticeLevel $practice_level): static
+    public function setPracticeLevel(?PracticeLevel $practiceLevel): static
     {
-        $this->practice_level = $practice_level;
+        $this->practiceLevel = $practiceLevel;
 
         return $this;
     }

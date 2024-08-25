@@ -34,11 +34,11 @@ class Address
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'address')]
-    private Collection $uuid;
+    private Collection $users;
 
     public function __construct()
     {
-        $this->uuid = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,24 +97,24 @@ class Address
     /**
      * @return Collection<int, User>
      */
-    public function getUserUuid(): Collection
+    public function getUsers(): Collection
     {
-        return $this->uuid;
+        return $this->users;
     }
 
-    public function addUserUuid(User $userUuid): static
+    public function addUser(User $userUuid): static
     {
-        if (!$this->uuid->contains($userUuid)) {
-            $this->uuid->add($userUuid);
+        if (!$this->users->contains($userUuid)) {
+            $this->users->add($userUuid);
             $userUuid->setAddress($this);
         }
 
         return $this;
     }
 
-    public function removeUserUuid(User $userUuid): static
+    public function removeUser(User $userUuid): static
     {
-        if ($this->uuid->removeElement($userUuid)) {
+        if ($this->users->removeElement($userUuid)) {
             // set the owning side to null (unless already changed)
             if ($userUuid->getAddress() === $this) {
                 $userUuid->setAddress(null);

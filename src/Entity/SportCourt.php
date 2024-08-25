@@ -18,22 +18,29 @@ class SportCourt
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $court_name = null;
+    #[ORM\Column(name: "court_name", length: 50)]
+    private ?string $courtName = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sport_courts')]
+    #[ORM\ManyToOne(inversedBy: 'sportCourts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Sport $sport = null;
 
     /**
      * @var Collection<int, UserReservation>
      */
-    #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'court')]
-    private Collection $user_reservations;
+    #[ORM\OneToMany(targetEntity: UserReservation::class, mappedBy: 'sportCourt')]
+    private Collection $userReservations;
+
+    /**
+     * @var Collection<int, SportCourtAvailability>
+     */
+    #[ORM\OneToMany(targetEntity: SportCourtAvailability::class, mappedBy: 'sportCourt')]
+    private Collection $sportCourtAvailabilities;
 
     public function __construct()
     {
-        $this->user_reservations = new ArrayCollection();
+        $this->userReservations = new ArrayCollection();
+        $this->sportCourtAvailabilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,12 +50,12 @@ class SportCourt
 
     public function getCourtName(): ?string
     {
-        return $this->court_name;
+        return $this->courtName;
     }
 
-    public function setCourtName(string $court_name): static
+    public function setCourtName(string $courtName): static
     {
-        $this->court_name = $court_name;
+        $this->courtName = $courtName;
 
         return $this;
     }
@@ -70,13 +77,13 @@ class SportCourt
      */
     public function getUserReservations(): Collection
     {
-        return $this->user_reservations;
+        return $this->userReservations;
     }
 
     public function addUserReservation(UserReservation $userReservation): static
     {
-        if (!$this->user_reservations->contains($userReservation)) {
-            $this->user_reservations->add($userReservation);
+        if (!$this->userReservations->contains($userReservation)) {
+            $this->userReservations->add($userReservation);
             $userReservation->setCourt($this);
         }
 
@@ -85,10 +92,40 @@ class SportCourt
 
     public function removeUserReservation(UserReservation $userReservation): static
     {
-        if ($this->user_reservations->removeElement($userReservation)) {
+        if ($this->userReservations->removeElement($userReservation)) {
             // set the owning side to null (unless already changed)
             if ($userReservation->getCourt() === $this) {
                 $userReservation->setCourt(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SportCourtAvailability>
+     */
+    public function getSportCourtAvailabilities(): Collection
+    {
+        return $this->sportCourtAvailabilities;
+    }
+
+    public function addSportCourtAvailability(SportCourtAvailability $sportCourtAvailability): static
+    {
+        if (!$this->sportCourtAvailabilities->contains($sportCourtAvailability)) {
+            $this->sportCourtAvailabilities->add($sportCourtAvailability);
+            $sportCourtAvailability->setSportCourt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSportCourtAvailability(SportCourtAvailability $sportCourtAvailability): static
+    {
+        if ($this->sportCourtAvailabilities->removeElement($sportCourtAvailability)) {
+            // set the owning side to null (unless already changed)
+            if ($sportCourtAvailability->getSportCourt() === $this) {
+                $sportCourtAvailability->setSportCourt(null);
             }
         }
 
