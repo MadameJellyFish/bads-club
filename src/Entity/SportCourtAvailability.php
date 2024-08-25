@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\SportCourtAvailabilityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: SportCourtAvailabilityRepository::class)]
 class SportCourtAvailability
 {
@@ -23,6 +25,10 @@ class SportCourtAvailability
     #[ORM\ManyToOne(inversedBy: 'sportCourtAvailabilities')]
     #[ORM\JoinColumn(nullable: false, name: 'court_id', referencedColumnName: 'id')]
     private ?SportCourt $sportCourt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'sportCourtAvailabilities')]
+    #[ORM\JoinColumn(nullable: false, name: 'day_id', referencedColumnName: 'id')]
+    private ?DayOfWeek $dayOfWeek = null;
 
     public function getId(): ?int
     {
@@ -61,6 +67,18 @@ class SportCourtAvailability
     public function setSportCourt(?SportCourt $sportCourt): static
     {
         $this->sportCourt = $sportCourt;
+
+        return $this;
+    }
+
+    public function getDayOfWeek(): ?DayOfWeek
+    {
+        return $this->dayOfWeek;
+    }
+
+    public function setDayOfWeek(?DayOfWeek $dayOfWeek): static
+    {
+        $this->dayOfWeek = $dayOfWeek;
 
         return $this;
     }

@@ -51,7 +51,7 @@ class UserHandler extends Handler
     {
         $user = $this->getUser();
         if ($user === null) {
-            return [];
+            return null;
         }
 
         $address = $user->getAddress();

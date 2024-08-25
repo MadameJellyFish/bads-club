@@ -65,10 +65,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
+    /**
+     * @var Collection<int, UserAvailability>
+     */
+    #[ORM\OneToMany(targetEntity: UserAvailability::class, mappedBy: 'relatedUser')]
+    private Collection $userAvailabilities;
+
     public function __construct()
     {
         $this->userReservations = new ArrayCollection();
         $this->userSports = new ArrayCollection();
+        $this->userAvailabilities = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -250,6 +257,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBirthdate(\DateTimeInterface $birthdate): static
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserAvailability>
+     */
+    public function getUserAvailabilities(): Collection
+    {
+        return $this->userAvailabilities;
+    }
+
+    public function addUserAvailability(UserAvailability $userAvailability): static
+    {
+        if (!$this->userAvailabilities->contains($userAvailability)) {
+            $this->userAvailabilities->add($userAvailability);
+            $userAvailability->setRelatedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAvailability(UserAvailability $userAvailability): static
+    {
+        if ($this->userAvailabilities->removeElement($userAvailability)) {
+            // set the owning side to null (unless already changed)
+            if ($userAvailability->getRelatedUser() === $this) {
+                $userAvailability->setRelatedUser(null);
+            }
+        }
 
         return $this;
     }
