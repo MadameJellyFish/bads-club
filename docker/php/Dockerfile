@@ -1,7 +1,7 @@
-# Usa una imagen oficial de PHP con FPM
+# Image oficiel de PHP avec FPM
 FROM php:8.2-fpm
 
-# Instala las extensiones de PHP necesarias
+# Installe les extensions de PHP necesaires
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libpq-dev \
@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y \
     pdo_pgsql \
     zip
 
-# Instala Composer
+# Installe Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia los archivos de la aplicación
+# Copie los fichiers de l'app
 COPY . /var/www
 
 # Establece permisos adecuados

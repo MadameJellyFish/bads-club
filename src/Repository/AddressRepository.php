@@ -16,6 +16,18 @@ class AddressRepository extends ServiceEntityRepository
         parent::__construct($registry, Address::class);
     }
 
+    public function findUsersByZipcodeAndCity($zipcode, $city)
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.address', 'a')
+            ->andWhere('a.zipcode = :zipcode')
+            ->andWhere('a.city = :city')
+            ->setParameter('zipcode', $zipcode)
+            ->setParameter('city', $city)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Address[] Returns an array of Address objects
     //     */
