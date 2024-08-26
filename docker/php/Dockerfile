@@ -19,15 +19,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copie los fichiers de l'app
 COPY . /var/www
 
-# Establece permisos adecuados
+# Etablie les permisions
 RUN chown -R www-data:www-data /var/www \
 && chmod -R 755 /var/www
 
-# Establie l'ubication du travail
+# Etablie l'ubication du travail
 WORKDIR /var/www
 
 # Installe dependencies de Composer, inclu PHPUnit
-RUN composer install --dev
+RUN composer install
 
 # Verification que PHPUnit est installé
 RUN ./vendor/bin/phpunit --version

@@ -2,7 +2,6 @@
 
 namespace App\Handler;
 
-use App\Entity\Address;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
