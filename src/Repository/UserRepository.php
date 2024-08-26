@@ -32,4 +32,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
+     /**
+     * @return ?User
+     */
+    public function getOneWithDetails($user): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.sports', 'us')
+            ->leftJoin('us.sport', 's')
+            ->leftJoin('us.practiceLevel', 'pl')
+            ->leftJoin('u.address', 'uad')
+            ->leftJoin('u.reservations', 'ur')
+            ->leftJoin('ur.status', 'rs')
+            ->leftJoin('u.availabilities', 'ua')
+            ->addSelect('us', 's', 'pl', 'uad', 'ur', 'rs', 'ua')
+            ->addSelect('us', 's', 'pl')
+            ->where('u = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -20,18 +20,41 @@ class UserHandler extends Handler
         if ($user === null) {
             return [];
         }
+        
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $user = $userRepository->getOneWithDetails($user);
+        
+        $sports = $user->getUserSports()->map(fn($userSport) => [
+            'sportName' => $userSport->getSport()->getsportName(),
+            'practiceLevel' => $userSport->getPracticeLevel()->getLevelName(),
+        ])->toArray();
+        
+        $address = $user->getAddress() ? [
+            'address' => $user->getAddress()->getAddress(),
+            'zipcode'  => $user->getAddress()->getZipcode(),
+            'city' => $user->getAddress()->getCity(),
+            'country' => $user->getAddress()->getCountry(),
+        ] : "";
+        
+        $userReservations = $user->getUserReservations()->map(fn($reservation) => [
+            'reservationDate' => $reservation->getReservationDate()->format('Y-m-d H:i:s'),
+            'status' => $reservation->getStatus()->getStatusName(),
+        ])->toArray();
+        
+        $userAvailabilities = $user->getUserAvailabilities()->map(fn($userAvailability) => [
+            'dayOfWeek' => $userAvailability->getDayOfWeek()->getDayName(),
+            'startTime' => $userAvailability->getUserAvailabilityStartTime()->format('H:i'),
+            'endTime' => $userAvailability->getUserAvailabilityEndTime()->format('H:i'),
+        ])->toArray();
 
         return [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
-            'firstName' => $user->getFirstName(),
-            'lastName' => $user->getLastName(),
-            'birthdate' => $user->getBirthdate(),
-            'address' => $user->getAddress()->getAddress(),
-            'zipcode'  => $user->getAddress()->getZipcode(),
-            'city' => $user->getAddress()->getCity(),
-            'country' => $user->getAddress()->getCountry(),
+            'sports' => $sports,
+            'address' => $address,
+            'userReservations' => $userReservations,
+            'userAvailabilities' => $userAvailabilities,
         ];
     }
 
@@ -47,14 +70,4 @@ class UserHandler extends Handler
         ], $users);
     }
 
-    public function getUserAddress(): ?Address
-    {
-        $user = $this->getUser();
-        if ($user === null) {
-            return null;
-        }
-
-        $address = $user->getAddress();
-        return $address;
-    }
 }
