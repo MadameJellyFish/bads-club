@@ -68,5 +68,4 @@ class UserHandler extends Handler
             'roles' => $user->getRoles()
         ], $users);
     }
-
 }

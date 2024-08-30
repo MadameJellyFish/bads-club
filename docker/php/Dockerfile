@@ -19,6 +19,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copie los fichiers de l'app
 COPY . /var/www
 
+RUN ls -la /var/www
+
 # Etablie les permisions
 RUN chown -R www-data:www-data /var/www \
 && chmod -R 755 /var/www
@@ -26,8 +28,8 @@ RUN chown -R www-data:www-data /var/www \
 # Etablie l'ubication du travail
 WORKDIR /var/www
 
-# Installe dependencies de Composer, inclu PHPUnit
-RUN composer install
+# # Installe dependencies de Composer, inclu PHPUnit
+# RUN composer install
 
-# Verification que PHPUnit est installé
-RUN ./vendor/bin/phpunit --version
+# # Verification que PHPUnit est installé
+# RUN ./vendor/bin/phpunit --version

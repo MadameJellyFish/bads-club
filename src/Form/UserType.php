@@ -29,10 +29,6 @@ class UserType extends AbstractType
             ->add('email',  EmailType::class)
             // ->add('roles')
             ->add('password', RepeatedType::class)
-            // ->add('address', EntityType::class, [
-            //     'class' => Address::class,
-            //     'choice_label' => 'id',
-            // ])
         ;
     }
 

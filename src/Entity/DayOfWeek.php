@@ -78,7 +78,6 @@ class DayOfWeek
     public function removeSportCourtAvailability(SportCourtAvailability $sportCourtAvailability): static
     {
         if ($this->sportCourtAvailabilities->removeElement($sportCourtAvailability)) {
-            // set the owning side to null (unless already changed)
             if ($sportCourtAvailability->getDayOfWeek() === $this) {
                 $sportCourtAvailability->setDayOfWeek(null);
             }
@@ -108,7 +107,6 @@ class DayOfWeek
     public function removeUserAvailability(UserAvailability $userAvailability): static
     {
         if ($this->userAvailabilities->removeElement($userAvailability)) {
-            // set the owning side to null (unless already changed)
             if ($userAvailability->getDayOfWeek() === $this) {
                 $userAvailability->setDayOfWeek(null);
             }
