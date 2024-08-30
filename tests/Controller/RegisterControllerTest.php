@@ -18,8 +18,10 @@ class RegisterControllerTest extends KernelTestCase
 
     public function testUserCreate(): void
     {
+        $email = uniqid('test_', true) . '@gmail.com';
+
         $user = new User();
-        $user->setEmail('x@gmail.com');
+        $user->setEmail($email);
         $user->setPassword('password');
         $user->setFirstName('Xiomi');
         $user->setLastName('Camargo');
@@ -27,7 +29,7 @@ class RegisterControllerTest extends KernelTestCase
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $userFromDb = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'x@gmail.com']);
+        $userFromDb = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
         $this->assertNotNull($userFromDb);
         $this->assertEquals('Xiomi', $userFromDb->getFirstName());
         $this->assertEquals('Camargo', $userFromDb->getLastName());
