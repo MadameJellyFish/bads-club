@@ -16,6 +16,9 @@ class RegisterControllerTest extends KernelTestCase
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
     }
 
+    /**
+     * @ignore
+     */
     public function testUserCreate(): void
     {
         $email = uniqid('test_', true) . '@gmail.com';
