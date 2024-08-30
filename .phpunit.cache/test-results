@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"App\\Tests\\Handler\\UserHandlerTest::testGetAllUsers":0.535,"App\\Tests\\Handler\\UserHandlerTest::testGetAllUsersWithoutUsers":0.016}}

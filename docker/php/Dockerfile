@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
     unzip \
+    iputils-ping \
     && docker-php-ext-install \
     intl \
     pdo \

@@ -34,7 +34,7 @@ jobs:
       - name: Run unit tests
         run: |
           if [ -f vendor/bin/phpunit ]; then
-            vendor/bin/phpunit --coverage-text
+            vendor/bin/phpunit
           else
             echo "No tests implemented yet."
           fi
